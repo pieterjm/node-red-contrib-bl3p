@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    RED.nodes.registerType('add-order',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""}
+        },
+	credentials: {
+		publickey: {type:"text"},
+		privatekey: {type:"password"}
+	},
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"add-order";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="add-order">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-publickey"><i class="fa fa-lock"></i> Public key</label>
+        <input type="text" id="node-input-publickey">
+    </div>
+    <div class="form-row">
+        <label for="node-input-privatekey"><i class="fa fa-lock"></i> Private key</label>
+        <input type="password" id="node-input-privatekey">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="add-order">
+    <p>A simple node interface to the add_order API calle of the Bl3p api</p>
+</script>
