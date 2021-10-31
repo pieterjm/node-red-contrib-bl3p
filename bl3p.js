@@ -28,7 +28,7 @@ module.exports = function(RED) {
 		if ( data ) {
 		    data = JSON.parse(data);
 		    if ( data.result === "success" ) {
-			node.send({result:true,payload:data});
+			node.send({result:true,payload:data,order_id:data.data.order_id});
 		    } else {
 			node.send({result:false,payload:data});			
 		    }
