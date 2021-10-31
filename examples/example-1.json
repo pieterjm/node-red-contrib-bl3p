@@ -1,0 +1,135 @@
+[
+    {
+        "id": "8a2457bcdb5fb13e",
+        "type": "tab",
+        "label": "BL3P API Example",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e9b0d1f1349f36f7",
+        "type": "inject",
+        "z": "8a2457bcdb5fb13e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "9c292c7df208972b"
+            ]
+        ]
+    },
+    {
+        "id": "9c292c7df208972b",
+        "type": "change",
+        "z": "8a2457bcdb5fb13e",
+        "name": "Set amount",
+        "rules": [
+            {
+                "t": "set",
+                "p": "amount_funds",
+                "pt": "msg",
+                "to": "100000",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "amount",
+                "pt": "msg",
+                "to": "amount_funds",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "type",
+                "pt": "msg",
+                "to": "bid",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "price",
+                "pt": "msg",
+                "to": "undefined",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "fee_currency",
+                "pt": "msg",
+                "to": "EUR",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "679f61b4ade81a12"
+            ]
+        ]
+    },
+    {
+        "id": "679f61b4ade81a12",
+        "type": "add-order",
+        "z": "8a2457bcdb5fb13e",
+        "name": "",
+        "x": 540,
+        "y": 80,
+        "wires": [
+            [
+                "9f73b66ac314ed2a"
+            ]
+        ]
+    },
+    {
+        "id": "9f73b66ac314ed2a",
+        "type": "order-info",
+        "z": "8a2457bcdb5fb13e",
+        "name": "",
+        "x": 740,
+        "y": 80,
+        "wires": [
+            [
+                "629684c4eed41535"
+            ]
+        ]
+    },
+    {
+        "id": "629684c4eed41535",
+        "type": "debug",
+        "z": "8a2457bcdb5fb13e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 80,
+        "wires": []
+    }
+]
