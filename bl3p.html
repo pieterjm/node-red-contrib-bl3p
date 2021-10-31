@@ -24,7 +24,11 @@
         }
     });
 </script>
-
+<script type="text/html" data-help-name="add-order">
+    <p>Creates and order through the <code>/money/order/add</code> function of the BL3P API from an incoming messages based on the properties of the message</p>
+    <p>The properties <code>msg.amount</code>, <code>msg.type</code>, <code>msg.price</code>, <code>msg.fee_currency</code>, <code>msg.amount_funds</code> can be set as specified in the BL3P API documentation.</p>
+    <p>The node output message that with a boolean <code>msg.result</code> property, which is set to true upon succes, and false in all other cases. The result from the BL3P API is stored in <code>msg.payload.data</code>.<p>
+</script>
 
 <script type="text/html" data-template-name="cancel-order">
     <div class="form-row node-input-bl3p">
@@ -142,5 +146,8 @@
             return this.name||"BL3P API";
         }
     });
+</script>
+<script type="text/html" data-help-name="bl3p-api">
+    <p>This module provides access to the BL3P API. The API is configured through this node with a public and private API key, which can be created, and require a valid BL3P account. For more informatie, visit <a href="https://www.bl3p.eu/" target="_new">https://www.bl3p.eu/</a>.</p>
 </script>
 
