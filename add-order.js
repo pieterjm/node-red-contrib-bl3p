@@ -2,54 +2,119 @@ module.exports = function(RED) {
     "use strict";
     var bl3p = require('bl3p');
 
+    function Bl3pApiNode(config) {
+	RED.nodes.createNode(this,config);
+    }
+    RED.nodes.registerType("bl3p-api",Bl3pApiNode,{
+	credentials: {
+            publickey: {type:"text"},
+            privatekey: {type:"password"}
+	}
+    });
+    
+    
     function AddOrderNode(config) {
         RED.nodes.createNode(this,config);
 	var node = this;
-	var bl3p_auth = new bl3p.Bl3pAuth(this.credentials.publickey, this.credentials.privatekey);
-
+	var bl3papi = RED.nodes.getNode(config.bl3p);
+	var bl3p_auth = new bl3p.Bl3pAuth(bl3papi.credentials.publickey,bl3papi.credentials.privatekey);
+	
         node.on('input', function(msg) {
-            if ( msg.currency === undefined ) {
-		node.send({result:false,payload:"no currency is set"});
+            if ( msg.fee_currency === undefined ) {
+		node.send({result:false,payload:"fee_currency is required"});
 		return;
             }
-            if ( msg.currency !== "EUR") {
-		node.send({result:false,payload:"Currency is not allowed"});
-		return;
-            }
-            if (msg.ordertype === undefined ) {
-		node.send({result:false,payload:"ordertype is not set"});
-		return;
-            }
-            if (["bid","ask"].includes(msg.ordertype) === false ) {
-		node.send({result:false,payload:"ordertype must be bid or ask"});
-		return;
-            }
-            if ( msg.dca_amount === undefined ) {
-		node.send({result:false,payload:"dca_amount is not set"});
-		return;
-	    }
-            if ( msg.dca_amount <  1) {
-		node.send({result:false,payload:"dca_amount is smaller than 1"});
-		return;
-	    }
-            if ( msg.dca_amount > 100 ) {
-		node.send({result:false,payload:"dca_amount is larger than 100"});
-		return;
-	    }
-            bl3p_auth.add_order(msg.dca_amount * 1e5, msg.ordertype, undefined, msg.currency, msg.dca_amount * 1e5, function(error,data){
-               if ( data ) {
-                 node.send({result:true,payload:"Succesfully bought bitcoin"});
-               } else {
-                 node.send({result:false,payload:"Failed to buybitcoin"});
-               }
+            bl3p_auth.add_order(msg.amount, msg.type, msg.price, msg.fee_currency, msg.amount_funds, function(error,data){
+		if ( data ) {
+		    data = JSON.parse(data);
+		    if ( data.result === "success" ) {
+			node.send({result:true,payload:data});
+		    } else {
+			node.send({result:false,payload:data});			
+		    }
+		 } else {
+                     node.send({result:false,payload:error,data:data});
+		}
             });
         });
     }
-    RED.nodes.registerType("add-order",AddOrderNode,{
-      credentials: {
-        publickey: {type:"text"},
-        privatekey: {type:"password"}
-      }
-    });
+
+    function CancelOrderNode(config) {
+	RED.nodes.createNode(this,config);
+	var node = this;
+	var bl3papi = RED.nodes.getNode(config.bl3p);
+	var bl3p_auth = new bl3p.Bl3pAuth(bl3papi.credentials.publickey,bl3papi.credentials.privatekey);
+	node.on('input', function(msg) {
+            if ( msg.order_id === undefined ) {
+		node.send({result:false,payload:"order_id is required"});
+		return;
+            }
+            bl3p_auth.cancel_order(msg.order_id, function(error,data){
+		if ( data ) {
+		    data = JSON.parse(data);
+		    if ( data.result === "success" ) {
+			node.send({result:true,payload:data});
+		    } else {
+			node.send({result:false,payload:data});			
+		    }
+		 } else {
+                    node.send({result:false,payload:error});
+		}
+            });
+        });
+    }
+
+    function OrderInfoNode(config) {
+	RED.nodes.createNode(this,config);
+	var node = this;
+	var bl3papi = RED.nodes.getNode(config.bl3p);
+	var bl3p_auth = new bl3p.Bl3pAuth(bl3papi.credentials.publickey,bl3papi.credentials.privatekey);
+	node.on('input', function(msg) {
+            if ( msg.order_id === undefined ) {
+		node.send({result:false,payload:"order_id is required"});
+		return;
+            }
+            bl3p_auth.order_info(msg.order_id, function(error,data){
+		if ( data ) {
+		    data = JSON.parse(data);
+		    if ( data.result === "success" ) {
+			node.send({result:true,payload:data,order_id:msg.order_id});
+		    } else {
+			node.send({result:false,payload:data,order_id:msg.order_id});			
+		    }
+		 } else {
+                     node.send({result:false,payload:error,orderid:msg.order_id});
+		}
+            });
+        });
+    }
+
+    function AccountInfoNode(config) {
+	RED.nodes.createNode(this,config);
+	var node = this;
+	var bl3papi = RED.nodes.getNode(config.bl3p);
+	var bl3p_auth = new bl3p.Bl3pAuth(bl3papi.credentials.publickey,bl3papi.credentials.privatekey);
+	node.on('input', function(msg) {
+            bl3p_auth.account_info(function(error,data){
+		if ( data ) {
+		    data = JSON.parse(data);
+		    if ( data.result === "success" ) {
+			node.send({result:true,payload:data});
+		    } else {
+			node.send({result:false,payload:data});			
+		    }
+		 } else {
+                    node.send({result:false,payload:error});
+		}
+            });
+        });
+    }
+    
+    
+    
+    RED.nodes.registerType("add-order",AddOrderNode);
+    RED.nodes.registerType("cancel-order",CancelOrderNode);
+    RED.nodes.registerType("order-info",OrderInfoNode);    
+    RED.nodes.registerType("account-info",AccountInfoNode);    
 };
 

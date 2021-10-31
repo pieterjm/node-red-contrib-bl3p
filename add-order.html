@@ -1,6 +1,135 @@
+<script type="text/html" data-template-name="add-order">
+    <div class="form-row node-input-bl3p">
+        <label for="node-input-bl3p"><i class="fa fa-tag"></i> Bl3p API</label>
+        <input type="text" id="node-input-bl3p">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
 <script type="text/javascript">
     RED.nodes.registerType('add-order',{
         category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+	    bl3p: {type: "bl3p-api", required: true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"Add Order";
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="cancel-order">
+    <div class="form-row node-input-bl3p">
+        <label for="node-input-bl3p"><i class="fa fa-tag"></i> Bl3p API</label>
+        <input type="text" id="node-input-bl3p">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('cancel-order',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+	    bl3p: {type: "bl3p-api", required: true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"Cancel Order";
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="order-info">
+    <div class="form-row node-input-bl3p">
+        <label for="node-input-bl3p"><i class="fa fa-tag"></i> Bl3p API</label>
+        <input type="text" id="node-input-bl3p">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('order-info',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+	    bl3p: {type: "bl3p-api", required: true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"Order Info";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="account-info">
+    <div class="form-row node-input-bl3p">
+        <label for="node-input-bl3p"><i class="fa fa-tag"></i> Bl3p API</label>
+        <input type="text" id="node-input-bl3p">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/javascript">
+    RED.nodes.registerType('account-info',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+	    bl3p: {type: "bl3p-api", required: true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"Account Info";
+        }
+    });
+</script>
+
+
+
+
+
+<script type="text/html" data-template-name="bl3p-api">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-publickey"><i class="fa fa-lock"></i> Public key</label>
+        <input type="text" id="node-config-input-publickey">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-privatekey"><i class="fa fa-lock"></i> Private key</label>
+        <input type="password" id="node-config-input-privatekey">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('bl3p-api',{
+        category: 'config',
         color: '#a6bbcf',
         defaults: {
             name: {value:""}
@@ -9,30 +138,9 @@
 		publickey: {type:"text"},
 		privatekey: {type:"password"}
 	},
-        inputs:1,
-        outputs:1,
-        icon: "file.png",
         label: function() {
-            return this.name||"add-order";
+            return this.name||"BL3P API";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="add-order">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-publickey"><i class="fa fa-lock"></i> Public key</label>
-        <input type="text" id="node-input-publickey">
-    </div>
-    <div class="form-row">
-        <label for="node-input-privatekey"><i class="fa fa-lock"></i> Private key</label>
-        <input type="password" id="node-input-privatekey">
-    </div>
-</script>
-
-<script type="text/html" data-help-name="add-order">
-    <p>A simple node interface to the add_order API calle of the Bl3p api</p>
-</script>
